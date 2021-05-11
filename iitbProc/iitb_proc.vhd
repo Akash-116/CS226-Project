@@ -21,7 +21,7 @@ architecture Form of iitb_proc is
 	component Register_file is 
 			port (	aout1, aout2, ain3: in std_logic_vector(2 downto 0); --3 bits used to address 8 values
 					datain: in std_logic_vector(15 downto 0); 
-					clk, wr_signal_bar: in std_logic; -- Here wr_bar is opposite of wr signal
+					clk, wr: in std_logic; -- Here wr_bar is opposite of wr signal
 					dataout1, dataout2: out std_logic_vector(15 downto 0));
 	end component;
 	component ALU is 
@@ -32,7 +32,7 @@ architecture Form of iitb_proc is
 	end component;
 	component Memory is
 			port (ain, datain: in std_logic_vector(15 downto 0); 
-					clk, wr_signal_bar: in std_logic;
+					clk, wr: in std_logic;
 					dataout: out std_logic_vector(15 downto 0));	
 	end component;
 	component FSM is 
@@ -75,16 +75,16 @@ begin
 
 	m1 : Mux16_2_1 port map(A => tALUc, B => tt2out, S0 => tm1, y => tm1out);
 
-	PC : Register16 port map(Reg_datain => tm1out, clk => clk, Reg_wrbar => tw1, Reg_dataout => tpcout);
+	PC : Register16 port map(Reg_datain => tm1out, clk => clk, wr => tw1, Reg_dataout => tpcout);
 	
 	m12 : Mux16_2_1 port map(A => tt1out, B => tt2out, S0 => tm12, y => tm12out);
 
 	m2 : Mux16_4_1 port map(A => tt2out, B => tpcout, C => tALUc, D => tt1out, S1 => tm21, S0 => tm20, y => tm2out);
 
 	Mem1 : Memory port map(ain => tm2out, datain => tm12out, dataout => tmemout,
-							clk => clk, wr_signal_bar => tw2);
+							clk => clk, wr => tw2);
 
-	IR : Register16 port map(Reg_datain => tmemout, clk => clk, Reg_wrbar => tw3, Reg_dataout => tirout);
+	IR : Register16 port map(Reg_datain => tmemout, clk => clk, wr => tw3, Reg_dataout => tirout);
 
 	m4 : Mux3_2_1 port map(A => tirout(11 downto 9), B => tt3out(2 downto 0), S0 => tm4, y => tm4out);
 
@@ -103,21 +103,21 @@ begin
 	S1 => tm51, S0 => tm50,y => tm5out);
 
 	Rf : Register_file port map(aout1 => tm4out, aout2 => tirout(8 downto 6), ain3 => tm3out,
-								datain => tm5out, clk => clk, wr_signal_bar => tw4,
+								datain => tm5out, clk => clk, wr => tw4,
 								dataout1 => tD1out, dataout2 => tD2out);
 	m8 : Mux16_2_1 port map(A => tD1out, B => tALUc, S0 => tm8, y => tm8out);
 	m7 : Mux16_4_1 port map(A => tD1out, B => tD2out, C => tALUc, D => tmemout, S0 => tm70, S1 => tm71, y => tm7out);
 	m6 : Mux16_4_1 port map(A => tmemout, B => Z16, C => tALUc, D => Z16, S1 => tm61, S0 => tm60, y => tm6out);
 
-	T1 : Register16 port map(Reg_datain => tm8out, clk => clk, Reg_wrbar => tw7, Reg_dataout => tt1out);
-	T2 : Register16 port map(Reg_datain => tm7out, clk => clk, Reg_wrbar => tw6, Reg_dataout => tt2out); 
-	T3 : Register16 port map(Reg_datain => tm6out, clk => clk, Reg_wrbar => tw5, Reg_dataout => tt3out);
+	T1 : Register16 port map(Reg_datain => tm8out, clk => clk, wr => tw7, Reg_dataout => tt1out);
+	T2 : Register16 port map(Reg_datain => tm7out, clk => clk, wr => tw6, Reg_dataout => tt2out); 
+	T3 : Register16 port map(Reg_datain => tm6out, clk => clk, wr => tw5, Reg_dataout => tt3out);
 	
 	m9 : Mux16_4_1 port map(A =>seImm9 , B => seImm6, C => tt2out, D => O16, S1 => tm91, S0 => tm90, y => tALUb);
     m10: Mux16_4_1 port map(A => tt3out, B => tpcout, C => tt1out, D => tt2out, S1 => tm101, S0 => tm100, y => tALUa);
 
 	ALU1 : ALU port map(A => tALUa, B => tALUb, C => tALUc, op => tALUcon, Z => tZout, Cout => tCout);
-	C : Register1 port map(Reg_datain => tCout, clk => clk, Reg_wrbar => twc, Reg_dataout => tCrout);
+	C : Register1 port map(Reg_datain => tCout, clk => clk, wr => twc, Reg_dataout => tCrout);
 
 	tt3zero <= not(tt3out(0) or tt3out(1) or tt3out(2) or tt3out(3) or tt3out(4) or tt3out(5) or tt3out(6) or tt3out(7) or tt3out(8)
 				or tt3out(9) or tt3out(10) or tt3out(11) or tt3out(12) or tt3out(13) or tt3out(14) or tt3out(15));
@@ -125,7 +125,7 @@ begin
 	mz : Mux1_2_1 port map(A => tZout, B => tt3zero, S0 => tmz, y => tmzout);
 	
 	-- Z stores output of ALU or T1. Hence the mux
-	Z : Register1 port map(Reg_datain => tmzout, clk => clk, Reg_wrbar => twz, Reg_dataout => tZrout);
+	Z : Register1 port map(Reg_datain => tmzout, clk => clk, wr => twz, Reg_dataout => tZrout);
 
 	O <= tmemout;
 	
