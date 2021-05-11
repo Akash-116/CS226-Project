@@ -19,7 +19,7 @@ architecture arc of Register_file is
 	type regArray is array(7 downto 0) of std_logic_vector(15 downto 0);
 	
 	-- Instantiate a object of above type
-	signal RegFile: regArray := (0 => x"000", 1 => x"0000", 2 => x"0000", 3 => x"0000",
+	signal RegFile: regArray := (0 => x"0000", 1 => x"0000", 2 => x"0000", 3 => x"0000",
 	4 => x"0000", 5 => x"0000", 6 => x"0000", 7 => x"0000");
 
 	begin
