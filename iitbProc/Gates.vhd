@@ -2,129 +2,121 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 package Gates is
-  component INVERTER is
-   port (A: in std_logic; Y: out std_logic);
-  end component INVERTER;
+  component NotGate is
+   port (A: in std_logic; B: out std_logic);
+  end component NotGate;
 
-  component AND_2 is
-   port (A, B: in std_logic; Y: out std_logic);
-  end component AND_2;
+  component AndGate is
+   port (A, B: in std_logic; C: out std_logic);
+  end component AndGate;
 
-  component NAND_2 is
-   port (A, B: in std_logic; Y: out std_logic);
-  end component NAND_2;
+  component NandGate is
+   port (A, B: in std_logic; C: out std_logic);
+  end component NandGate;
 
-  component OR_2 is
-   port (A, B: in std_logic; Y: out std_logic);
-  end component OR_2;
+  component OrGate is
+   port (A, B: in std_logic; C: out std_logic);
+  end component OrGate;
 
-  component NOR_2 is
-   port (A, B: in std_logic; Y: out std_logic);
-  end component NOR_2;
+  component NorGate is
+   port (A, B: in std_logic; C: out std_logic);
+  end component NorGate;
 
-  component XOR_2 is
-   port (A, B: in std_logic; Y: out std_logic);
-  end component XOR_2;
+  component XorGate is
+   port (A, B: in std_logic; C: out std_logic);
+  end component XorGate;
 
-  component XNOR_2 is
-   port (A, B: in std_logic; Y: out std_logic);
-  end component XNOR_2;
-
-  component HALF_ADDER is
+  component HalfAdder is
    port (A, B: in std_logic; S, C: out std_logic);
-  end component HALF_ADDER;
+  end component HalfAdder;
 
 end package Gates;
 
-
+-- ----------------------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
-entity INVERTER is
-   port (A: in std_logic; Y: out std_logic);
-end entity INVERTER;
+entity NotGate is
+   port (A: in std_logic; B: out std_logic);
+end entity NotGate;
 
-architecture arc of INVERTER is
+architecture arc of NotGate is
 begin
-   Y <= not A;
+   B <= not A;
 end arc;
   
+-- ----------------------------------------------------------------------------------
 
 library ieee;
 use ieee.std_logic_1164.all;
-entity AND_2 is
-   port (A, B: in std_logic; Y: out std_logic);
-end entity AND_2;
+entity AndGate is
+   port (A, B: in std_logic; C: out std_logic);
+end entity AndGate;
 
-architecture arc of AND_2 is
+architecture arc of AndGate is
 begin
-   Y <= A and B;
+   C <= A and B;
+end arc;
+  -- ----------------------------------------------------------------------------------
+
+library ieee;
+use ieee.std_logic_1164.all;
+entity NandGate is
+   port (A, B: in std_logic; C: out std_logic);
+end entity NandGate;
+
+architecture arc of NandGate is
+begin
+   C <= not (A and B);
+end arc;
+  -- ----------------------------------------------------------------------------------
+
+library ieee;
+use ieee.std_logic_1164.all;
+entity OrGate is
+   port (A, B: in std_logic; C: out std_logic);
+end entity OrGate;
+
+architecture arc of OrGate is
+begin
+   C <= A or B;
+end arc;
+  -- ----------------------------------------------------------------------------------
+
+library ieee;
+use ieee.std_logic_1164.all;
+entity NorGate is
+   port (A, B: in std_logic; C: out std_logic);
+end entity NorGate;
+
+architecture arc of NorGate is
+begin
+   C <= not (A or B);
 end arc;
   
+-- ----------------------------------------------------------------------------------
+
 library ieee;
 use ieee.std_logic_1164.all;
-entity NAND_2 is
-   port (A, B: in std_logic; Y: out std_logic);
-end entity NAND_2;
+entity XorGate is
+   port (A, B: in std_logic; C: out std_logic);
+end entity XorGate;
 
-architecture arc of NAND_2 is
+architecture arc of XorGate is
 begin
-   Y <= not (A and B);
+   C <= A xor B;
 end arc;
-  
-library ieee;
-use ieee.std_logic_1164.all;
-entity OR_2 is
-   port (A, B: in std_logic; Y: out std_logic);
-end entity OR_2;
-
-architecture arc of OR_2 is
-begin
-   Y <= A or B;
-end arc;
-  
-library ieee;
-use ieee.std_logic_1164.all;
-entity NOR_2 is
-   port (A, B: in std_logic; Y: out std_logic);
-end entity NOR_2;
-
-architecture arc of NOR_2 is
-begin
-   Y <= not (A or B);
-end arc;
-  
+  -- ----------------------------------------------------------------------------------
 
 library ieee;
 use ieee.std_logic_1164.all;
-entity XOR_2 is
-   port (A, B: in std_logic; Y: out std_logic);
-end entity XOR_2;
-
-architecture arc of XOR_2 is
-begin
-   Y <= A xor B;
-end arc;
-  
-library ieee;
-use ieee.std_logic_1164.all;
-entity XNOR_2 is
-   port (A, B: in std_logic; Y: out std_logic);
-end entity XNOR_2;
-
-architecture arc of XNOR_2 is
-begin
-   Y <= not (A xor B);
-end arc;
-  
-library ieee;
-use ieee.std_logic_1164.all;
-entity HALF_ADDER is
+entity HalfAdder is
    port (A, B: in std_logic; S, C: out std_logic);
-end entity HALF_ADDER;
+end entity HalfAdder;
 
-architecture arc of HALF_ADDER is
+architecture arc of HalfAdder is
 begin
    S <= (A xor B);
    C <= (A and B);
 end arc;
   
+-- ----------------------------------------------------------------------------------

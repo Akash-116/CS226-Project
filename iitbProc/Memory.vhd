@@ -3,9 +3,9 @@ use std.standard.all;
 
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
 use ieee.std_logic_arith.all;	 
 use ieee.std_logic_unsigned.all;
+use ieee.numeric_std.all;
 
 -- Memory is asyncronous read, syncronous write.
 
@@ -50,16 +50,13 @@ architecture arc of Memory is
     -- you can use the above mentioned way to initialise the memory with the instructions and the data as required to test your processor
     begin
 
-    dataout <= Memory(conv_integer(ain)); -- Asyncronous Read
-    
-    Mem_write:
-    
-    process (wr, datain, ain, clk)
+        dataout <= Memory(conv_integer(ain)); -- Asyncronous Read
+        process (wr, datain, ain, clk)
         begin
-        if(wr = '1') then
-            if(rising_edge(clk)) then
-                Memory(conv_integer(ain)) <= datain;
+            if(wr = '1') then
+                if(rising_edge(clk)) then
+                    Memory(conv_integer(ain)) <= datain;
+                end if;
             end if;
-        end if;
-    end process;
+        end process;
 end arc;
