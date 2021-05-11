@@ -11,7 +11,7 @@ use ieee.std_logic_unsigned.all;
 
 entity Memory is 
 	port (ain, datain: in std_logic_vector(15 downto 0); 
-          clk, wr_signal_bar: in std_logic;
+          clk, wr: in std_logic;
           dataout: out std_logic_vector(15 downto 0));
 end entity;
 
@@ -54,9 +54,9 @@ architecture arc of Memory is
     
     Mem_write:
     
-    process (wr_signal_bar, datain, ain, clk)
+    process (wr, datain, ain, clk)
         begin
-        if(wr_signal_bar = '0') then
+        if(wr = '1') then
             if(rising_edge(clk)) then
                 Memory(conv_integer(ain)) <= datain;
             end if;

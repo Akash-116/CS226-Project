@@ -38,16 +38,18 @@ architecture arc of FSM is
 
             nq_var := fsm_state_symbol; 
             -- initially no write is active.
-            w1_var := '1';
-            w2_var := '1';
-            w3_var := '1';
-            w4_var := '1';
-            w5_var := '1';
-            w6_var := '1';
-            w7_var := '1';
+            w1_var := '0';
+            w2_var := '0';
+            w3_var := '0';
+            w4_var := '0';
+            w5_var := '0';
+            w6_var := '0';
+            w7_var := '0';
             
             -- ALU_C  for PC
             m1_var := '0';
+            -- t1 for mem_in
+            m12_var := '0';
             -- PC for mem_addr
             m20_var := '1';
             m21_var := '0';
@@ -68,19 +70,17 @@ architecture arc of FSM is
             m100_var := '0';
             m101_var := '0';
             
-            wc_var := '1'; -- some instantiation
-            wz_var := '1'; -- some instantiation
-            mz_var := '0';
-            done_var := '0'; -- for State14
-            -- addition is default
-            alu_var := '0';
-            m12_var := '0';
+            wc_var := '0'; -- deactivated writing into C
+            wz_var := '0'; -- Deactivated writing into Z
+            mz_var := '0'; -- Zero of ALU output is stored into Z
+            done_var := '0'; -- to denote that Instruction is completed
+            alu_var := '0';  -- Addition is default
                 
 
             -- compute next-state, output
             case fsm_state_symbol is
                 when s0 =>
-                    w3_var  := '0';				 
+                    w3_var  := '1';				 
 
                     m21_var := '0';
                     m20_var := '1';
@@ -96,9 +96,9 @@ architecture arc of FSM is
                     end if;
 
                 when s1 =>
-                    w5_var := '0';
-                    w6_var := '0';
-                    w7_var := '0';
+                    w5_var := '1';
+                    w6_var := '1';
+                    w7_var := '1';
 
                     m4_var := '0';
                     m61_var := '0';
@@ -132,7 +132,7 @@ architecture arc of FSM is
                     end if;
                     
                 when s2 =>
-                    w5_var := '0';
+                    w5_var := '1';
 
                     m61_var := '1';
                     m60_var := '0';
@@ -141,16 +141,14 @@ architecture arc of FSM is
                     m101_var := '1';
                     m100_var := '0';
 
-                    if (instruction(15 downto 12) = "0000") then
-                        wc_var := '0';
-                    end if;
+                    wc_var := '1'; -- enable write into C
+                    wz_var := '1'; -- enable write into Z
 
-                    wz_var := '0';
                     alu_var := '0'; -- Perform Addition
                     nq_var := s3;
 
                 when s21 =>
-                    w5_var := '0';
+                    w5_var := '1';
 
                     m61_var := '1';
                     m60_var := '0';
@@ -159,13 +157,14 @@ architecture arc of FSM is
                     m101_var := '1';
                     m100_var := '0';
 
-                    wz_var := '0';
+                    wc_var := '0'; --disable writing into C
+                    wz_var := '1'; --enable writing into Z
                     alu_var := '1'; -- Perform NAND
                     nq_var := s3;
 
                         
                 when s3 =>
-                    w4_var := '0';				 
+                    w4_var := '1';				 
 
                     m31_var := '1';
                     m30_var := '0';
@@ -176,7 +175,7 @@ architecture arc of FSM is
             
             
                 when s4 =>
-                    w5_var := '0';
+                    w5_var := '1';
 
                     m61_var := '1';
                     m60_var := '0';
@@ -185,14 +184,14 @@ architecture arc of FSM is
                     m101_var := '1';
                     m100_var := '0';
 
-                    wc_var := '0';
-                    wz_var := '0';
+                    wc_var := '1';
+                    wz_var := '1';
                     
                     nq_var := s5;
             
                         
                 when s5 =>
-                    w4_var := '0';				 
+                    w4_var := '1';				 
 
                     m31_var := '0';		
                     m30_var := '1';
@@ -203,7 +202,7 @@ architecture arc of FSM is
 
                         
                 when s6 =>
-                    w4_var := '0';
+                    w4_var := '1';
 
                     m31_var := '0';
                     m30_var := '0';
@@ -214,7 +213,7 @@ architecture arc of FSM is
 
                     
                 when s7 =>
-                    w6_var := '0';
+                    w6_var := '1';
                     
                     m71_var := '1';
                     m70_var := '0';
@@ -230,22 +229,22 @@ architecture arc of FSM is
                     end if;
                     
                 when s8 =>
-                    w5_var := '0';				 
+                    w5_var := '1';				 
 
                     m21_var := '0';	
                     m20_var := '0';
                     m61_var := '0';	
                     m60_var := '0';
+
+                    -- Here, "t3 is zero" is not checked 
+                    -- since t3 is just being written!
+                    -- check in next state ,  that is s10
                     
-                    wz_var := '0';
-                    mz_var := '1';
-
                     nq_var := s10;
-
-
+                    
 
                 when s9 =>
-                    w2_var := '0';
+                    w2_var := '1';
 
                     m21_var := '0';
                     m20_var := '0';
@@ -255,20 +254,24 @@ architecture arc of FSM is
 
                         
                 when s10 =>
-                    w4_var := '0';				 
+                    w4_var := '1';				 
 
                     m31_var := '0';	
                     m30_var := '0';
                     m51_var := '1';	
                     m50_var := '1';
 
+                    -- checking in this state, bcoz in prev state t3 is just written!
+                    wz_var := '1'; --enable writing into Z
+                    mz_var := '1'; -- Z is equal to "t3 is zero?"
+
                     nq_var := sa;
 
                         
                 when s11 =>
                 -- change made here t1->mem_addr
-                    w6_var := '0';
-                    -- w7_var := '0';
+                    w6_var := '1';
+
                     m21_var := '1';
                     m20_var := '1';
                     m71_var := '1';	
@@ -278,8 +281,8 @@ architecture arc of FSM is
             
                         
                 when s12 => 
-                    w4_var := '0';
-                    w5_var := '0';				 				 
+                    w4_var := '1';
+                    w5_var := '1';				 				 
 
                     m31_var := '1';	
                     m30_var := '1';
@@ -295,8 +298,8 @@ architecture arc of FSM is
                     nq_var := s19;
                     
                 when s13 =>
-                    w5_var := '0';				 
-                    w6_var := '0';
+                    w5_var := '1';				 
+                    w6_var := '1';
 
                     m4_var := '1';
                     m61_var := '1';
@@ -312,8 +315,8 @@ architecture arc of FSM is
 
                 when s14 => 
                     -- changes made
-                    w2_var := '0';
-                    w7_var := '0';
+                    w2_var := '1';
+                    w7_var := '1';
 
                     m21_var := '1';      
                     m20_var := '1';
@@ -331,7 +334,7 @@ architecture arc of FSM is
                     end if;
                     
                 when s15 =>
-                    w1_var := '0';
+                    w1_var := '1';
 
                     m1_var := '0';
                     m91_var := '0';
@@ -343,8 +346,8 @@ architecture arc of FSM is
                     done_var := '1'; -- what is done_var??
             
                 when s16 =>
-                    w4_var := '0';
-                    w6_var := '0';
+                    w4_var := '1';
+                    w6_var := '1';
 
                     m31_var := '0';
                     m30_var := '0';
@@ -361,7 +364,7 @@ architecture arc of FSM is
                     end if;
             
                 when s17 =>
-                    w1_var := '0';
+                    w1_var := '1';
 
                     m1_var := '0';
                     m91_var := '0';
@@ -373,7 +376,7 @@ architecture arc of FSM is
                     done_var := '1';
                             
                 when s18 =>
-                    w1_var := '0';				 	
+                    w1_var := '1';				 	
 
                     m1_var := '1';
 
@@ -381,7 +384,7 @@ architecture arc of FSM is
                     done_var := '1';
 
                 when s19 =>
-                    w7_var := '0';
+                    w7_var := '1';
 
                     m8_var := '1';
                     m91_var := '1';
@@ -397,7 +400,7 @@ architecture arc of FSM is
 
                         
                 when sa =>
-                    w1_var := '0';				 
+                    w1_var := '1';				 
 
                     m1_var := '0';
                     m91_var := '1';

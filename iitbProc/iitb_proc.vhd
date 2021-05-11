@@ -76,6 +76,8 @@ begin
 	m1 : Mux16_2_1 port map(A => tALUc, B => tt2out, S0 => tm1, y => tm1out);
 
 	PC : Register16 port map(Reg_datain => tm1out, clk => clk, Reg_wrbar => tw1, Reg_dataout => tpcout);
+	
+	m12 : Mux16_2_1 port map(A => tt1out, B => tt2out, S0 => tm12, y => tm12out);
 
 	m2 : Mux16_4_1 port map(A => tt2out, B => tpcout, C => tALUc, D => tt1out, S1 => tm21, S0 => tm20, y => tm2out);
 
@@ -127,5 +129,4 @@ begin
 
 	O <= tmemout;
 	
-	m12 : Mux16_2_1 port map(A => tt1out, B => tt2out, S0 => tm12, y => tm12out);
 end Form;

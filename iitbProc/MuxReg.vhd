@@ -4,12 +4,12 @@ use ieee.std_logic_1164.all;
 package MuxReg is
     component Register1 is 
 			port (	Reg_datain: in std_logic; 
-				clk, Reg_wrbar: in std_logic;
+				clk, wr: in std_logic;
 				Reg_dataout: out std_logic);
 	end component;
 	component Register16 is 
 			port (	Reg_datain: in std_logic_vector(15 downto 0); 
-				clk, Reg_wrbar: in std_logic;
+				clk, wr: in std_logic;
 				Reg_dataout: out std_logic_vector(15 downto 0));
 	end component;
 	component Mux1_2_1 is 
@@ -58,7 +58,7 @@ use ieee.std_logic_unsigned.all;
 
 entity Register1 is 
 	port (	Reg_datain: in std_logic; 
-			clk, Reg_wrbar: in std_logic;
+			clk, wr: in std_logic;
 			Reg_dataout: out std_logic);
 end entity;
 
@@ -71,9 +71,9 @@ signal R: std_logic := '0';
 begin
 Reg_dataout <= R;
 Reg_write:
-process (Reg_wrbar,Reg_datain,clk)
+process (wr,Reg_datain,clk)
 	begin
-	if(Reg_wrbar = '0') then
+	if(wr = '1') then
 		if(rising_edge(clk)) then
 			R <= Reg_datain;
 		end if;
@@ -97,7 +97,7 @@ use ieee.std_logic_unsigned.all;
 
 entity Register16 is 
 	port (	Reg_datain: in std_logic_vector(15 downto 0); 
-			clk, Reg_wrbar: in std_logic;
+			clk, wr: in std_logic;
 			Reg_dataout: out std_logic_vector(15 downto 0));
 end entity;
 
@@ -110,9 +110,9 @@ signal R: std_logic_vector(15 downto 0) := (others => '0');
 begin
 Reg_dataout <= R;
 Reg_write:
-process (Reg_wrbar,Reg_datain,clk)
+process (wr,Reg_datain,clk)
 	begin
-	if(Reg_wrbar = '0') then
+	if(wr = '1') then
 		if(rising_edge(clk)) then
 			R <= Reg_datain;
 		end if;

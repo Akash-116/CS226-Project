@@ -10,7 +10,7 @@ use ieee.std_logic_unsigned.all;
 entity Register_file is 
 	port (	aout1, aout2, ain3: in std_logic_vector(2 downto 0); --3 bits used to address 8 values
 			datain: in std_logic_vector(15 downto 0); 
-			clk, wr_signal_bar: in std_logic; -- Here wr_bar is opposite of wr signal
+			clk, wr: in std_logic;
 			dataout1, dataout2: out std_logic_vector(15 downto 0));
 end entity;
 
@@ -26,9 +26,9 @@ architecture arc of Register_file is
 	dataout1 <= RegFile(conv_integer(aout1)); -- This is asyncronous reading
 	dataout2 <= RegFile(conv_integer(aout2)); -- This is asyncronous reading
 
-	process (wr_signal_bar, datain, ain3, clk)
+	process (wr, datain, ain3, clk)
 		begin
-		if(wr_signal_bar = '0') then
+		if(wr = '1') then
 			if(rising_edge(clk)) then
 				RegFile(conv_integer(ain3)) <= datain; --Syncronous write to the register storage
 			end if;
