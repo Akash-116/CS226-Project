@@ -17,8 +17,10 @@ architecture behav of IITBProc is
 component controller 
 port(
 
-	opcode: in std_logic_vector(3 downto 0);
-	ir_1_0: in std_logic_vector(1 downto 0);
+	opcode_ir: in std_logic_vector(3 downto 0);
+	opcode_mem: in std_logic_vector(3 downto 0);
+	ir_1_0_ir: in std_logic_vector(1 downto 0);
+	ir_1_0_mem: in std_logic_vector(1 downto 0);
 	c: in std_logic;
 	z: in std_logic;
 	t1: in std_logic_vector(15 downto 0);
@@ -79,8 +81,10 @@ port(
 	clk : in std_logic;
 	rst: in std_logic;
 	
-	opcode: out std_logic_vector(3 downto 0);
-	ir_1_0: out std_logic_vector(1 downto 0);
+	opcode_ir: out std_logic_vector(3 downto 0);
+	opcode_mem: out std_logic_vector(3 downto 0);
+	ir_1_0_ir: out std_logic_vector(1 downto 0);
+	ir_1_0_mem: out std_logic_vector(1 downto 0);
 	c: out std_logic;
 	z: out std_logic;
 	t1: out std_logic_vector(15 downto 0);
@@ -104,8 +108,10 @@ signal c_write,
 	m100,m101,
 	mz:std_logic;
 	
-signal	opcode:std_logic_vector(3 downto 0);
-signal	ir_1_0:std_logic_vector(1 downto 0);
+signal	opcode_ir:std_logic_vector(3 downto 0);
+signal	ir_1_0_ir:std_logic_vector(1 downto 0);
+signal	opcode_mem:std_logic_vector(3 downto 0);
+signal	ir_1_0_mem:std_logic_vector(1 downto 0);
 signal	c:std_logic;
 signal	z:std_logic;
 signal	t1:std_logic_vector(15 downto 0);
@@ -118,8 +124,10 @@ begin
 
 control_unit: controller port map(
 
-	opcode,
-	ir_1_0,
+	opcode_ir,
+	opcode_mem,
+	ir_1_0_ir,
+	ir_1_0_mem,
 	c,
 	z,
 	t1,
@@ -174,8 +182,10 @@ datapath_unit:datapath port map(
 	clk,
 	rst,
 	
-	opcode,
-	ir_1_0,
+	opcode_ir,
+	opcode_mem,
+	ir_1_0_ir,
+	ir_1_0_mem,
 	c,
 	z,
 	t1,
@@ -183,11 +193,6 @@ datapath_unit:datapath port map(
 	t3
 
 ); 
-
-
-
-
-
 
 end architecture;
 

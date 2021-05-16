@@ -266,6 +266,118 @@ process
 	clock<='1';
 	reset<='0';
 	wait for 2.5 sec;
+	
+	clock<='0';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='1';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='0';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='1';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='0';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='1';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='0';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='1';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='0';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='1';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='0';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='1';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='0';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='1';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='0';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='1';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='0';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='1';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='0';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='1';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='0';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='1';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='0';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='1';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='0';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='1';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='0';
+	reset<='0';
+	wait for 2.5 sec;
+	
+	clock<='1';
+	reset<='0';
+	wait for 2.5 sec;
 
 
 wait;

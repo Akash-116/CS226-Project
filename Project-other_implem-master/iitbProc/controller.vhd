@@ -7,8 +7,10 @@ use work.all;
 entity controller is 
 port(
 
-	opcode: in std_logic_vector(3 downto 0);
-	ir_1_0: in std_logic_vector(1 downto 0);
+	opcode_ir: in std_logic_vector(3 downto 0);
+	opcode_mem: in std_logic_vector(3 downto 0);
+	ir_1_0_ir: in std_logic_vector(1 downto 0);
+	ir_1_0_mem: in std_logic_vector(1 downto 0);
 	c: in std_logic;
 	z: in std_logic;
 	t1: in std_logic_vector(15 downto 0);
@@ -58,7 +60,7 @@ end component;
 begin
 	process(clk)
 		variable s_curr_var:std_logic_vector(4 downto 0);
-		variable s_next_var:std_logic_vector(4 downto 0);
+		variable s_next_var:std_logic_vector(4 downto 0):="00000";
 		variable t1_write_var:std_logic:= '0';
 		variable t2_write_var:std_logic:= '0';
 		variable t3_write_var:std_logic:= '0';
@@ -104,7 +106,7 @@ begin
 				m90_var  := '0';  m91_var   := '0';
 				m100_var  := '0';  m101_var   := '0';
 				mz_var   :='0';	
-
+				s_curr_var:=s_next_var;
 				if(rst='1') then
 					s_curr_var:="00000";
 					s_next_var:="00000";
@@ -114,11 +116,11 @@ begin
 					ir_write_var:='1';
 					m21_var:='0';
 					m20_var:='1';
-					if(opcode="1000") then
+					if(opcode_mem="1000") then
 						s_next_var := "10000";
-					elsif(opcode="1001") then
+					elsif(opcode_mem="1001") then
 						s_next_var:="10000";
-					elsif(opcode="0011") then
+					elsif(opcode_mem="0011") then
 						s_next_var := "00110";
 					else
 						s_next_var:="00001";
@@ -137,20 +139,22 @@ begin
 					m60_var:='1';
 
 
-					if(opcode = "0001") then
+					if(opcode_mem = "0001") then
 						s_next_var:="00100";
-					elsif(opcode(3 downto 1) = "100") then
+					elsif(opcode_mem = "0100") then
 						s_next_var := "00111";
-					elsif(opcode= "1100") then
+					elsif(opcode_mem = "0101") then
+						s_next_var := "00111";
+					elsif(opcode_mem= "1100") then
 						if(t1=t2) then
 							s_next_var := "10001";
 						else
 							s_next_var := "10100";
 						end if;
-					elsif(opcode = "0000") then
-						if(ir_1_0="00") then
+					elsif(opcode_mem = "0000") then
+						if(ir_1_0_mem="00") then
 							s_next_var := "00010";
-						elsif(ir_1_0 = "10") then
+						elsif(ir_1_0_mem = "10") then
 							if(c='0') then
 								s_next_var := "10100";
 							else
@@ -163,10 +167,10 @@ begin
 								s_next_var := "00010";
 							end if;
 						end if;
-					elsif(opcode = "0010") then
-						if(ir_1_0="00") then
+					elsif(opcode_mem = "0010") then
+						if(ir_1_0_mem="00") then
 							s_next_var := "10101";
-						elsif(ir_1_0 = "10") then
+						elsif(ir_1_0_mem = "10") then
 							if(c='0') then
 								s_next_var := "10100";
 							else
@@ -179,10 +183,10 @@ begin
 								s_next_var := "10101";
 							end if;
 						end if;
-					elsif opcode = "0110" then
+					elsif opcode_mem = "0110" then
 						s_next_var := "01011";
 					else 
-						--opcode is 0111
+						--opcode_mem is 0111
 						s_next_var := "01101";
 					end if;
 
@@ -240,7 +244,7 @@ begin
 					m90_var:='1';
 					m71_var:='1';
 					m70_var:='0';
-					if opcode = "0100" then
+					if opcode_ir = "0100" then
 						s_next_var:="01000";
 					else
 						s_next_var:="01001";
@@ -334,7 +338,7 @@ begin
 					m50_var:='0';
 					m71_var:='0';
 					m70_var:='1';
-					if opcode = "1000" then
+					if opcode_mem = "1000" then
 						s_next_var:="01111";
 					else
 						s_next_var:="10010";
@@ -387,7 +391,7 @@ begin
 
 				end if;
 				
-				s_curr_var:=s_next_var;
+				
 				t1_write  <= t1_write_var;
 				t2_write  <= t2_write_var;
 				t3_write   <= t3_write_var;

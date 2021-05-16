@@ -32,8 +32,10 @@ port(
 	clk : in std_logic;
 	rst: in std_logic;
 	
-	opcode: out std_logic_vector(3 downto 0);
-	ir_1_0: out std_logic_vector(1 downto 0);
+	opcode_ir: out std_logic_vector(3 downto 0);
+	opcode_mem: out std_logic_vector(3 downto 0);
+	ir_1_0_ir: out std_logic_vector(1 downto 0);
+	ir_1_0_mem: out std_logic_vector(1 downto 0);
 	c: out std_logic;
 	z: out std_logic;
 	t1: out std_logic_vector(15 downto 0);
@@ -293,8 +295,10 @@ begin
 	m3(1) <= m31;
 	Mux_rf_a3_inp : fourbyone_mux_3bit port map(ir_signal(11 downto 9),ir_signal(8 downto 6),ir_signal(5 downto 3),t3_outp_signal(2 downto 0),m3,rf_a3_inp);
 
-	opcode<=ir_signal(15 downto 12);
-	ir_1_0 <= ir_signal(1 downto 0);
+	opcode_mem<=memory_outp_signal(15 downto 12);
+	ir_1_0_mem <= memory_outp_signal(1 downto 0);
+	opcode_ir<=ir_signal(15 downto 12);
+	ir_1_0_ir <= ir_signal(1 downto 0);
 	
 
 end architecture;
