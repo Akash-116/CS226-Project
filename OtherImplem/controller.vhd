@@ -62,8 +62,6 @@ end component;
 begin
 	process(clk,opcode_ir,opcode_mem,ir_1_0_ir,ir_1_0_mem,rf_1,rf_2,c,z,t1,t2,t3,rst)
 		variable s_curr_var:std_logic_vector(4 downto 0):="00000";
-		variable s_next_var:std_logic_vector(4 downto 0):="00000";
-		variable s_temp1_var:std_logic_vector(4 downto 0) := "00000";
 		variable s_temp2_var:std_logic_vector(4 downto 0) := "00000";
 		variable t1_write_var:std_logic:= '0';
 		variable t2_write_var:std_logic:= '0';
@@ -111,8 +109,8 @@ begin
 			m100_var  := '0';  m101_var   := '0';
 			mz_var   :='0';	
 --			s_curr_var:=s_next_var;
-			s_temp1_var:=s_next_var;
-			if(s_temp1_var="00000") then
+--			s_curr_var:=s_next_var;
+			if(s_curr_var="00000") then
 				ir_write_var:='1';
 				m21_var:='0';
 				m20_var:='1';
@@ -127,7 +125,7 @@ begin
 
 				end if;
 
-			elsif (s_temp1_var="00001") then
+			elsif (s_curr_var="00001") then
 				t1_write_var:='1';
 				t2_write_var:='1';
 				t3_write_var:='1';
@@ -139,18 +137,18 @@ begin
 				m60_var:='1';
 
 
-				if(opcode_mem = "0001") then
+				if(opcode_ir = "0001") then
 					s_temp2_var:="00100";
-				elsif(opcode_mem = "0100") then
+				elsif(opcode_ir = "0100") then
 					s_temp2_var := "00111";
-				elsif(opcode_mem = "0101") then
+				elsif(opcode_ir = "0101") then
 					s_temp2_var := "00111";
-				elsif(opcode_mem= "1100") then
+				elsif(opcode_ir= "1100") then
 						s_temp2_var := "10110";
-				elsif(opcode_mem = "0000") then
-					if(ir_1_0_mem="00") then
+				elsif(opcode_ir = "0000") then
+					if(ir_1_0_ir="00") then
 						s_temp2_var := "00010";
-					elsif(ir_1_0_mem = "10") then
+					elsif(ir_1_0_ir = "10") then
 						if(c='0') then
 							s_temp2_var := "10100";
 						else
@@ -163,10 +161,10 @@ begin
 							s_temp2_var := "00010";
 						end if;
 					end if;
-				elsif(opcode_mem = "0010") then
-					if(ir_1_0_mem="00") then
+				elsif(opcode_ir = "0010") then
+					if(ir_1_0_ir="00") then
 						s_temp2_var := "10101";
-					elsif(ir_1_0_mem = "10") then
+					elsif(ir_1_0_ir = "10") then
 						if(c='0') then
 							s_temp2_var := "10100";
 						else
@@ -179,15 +177,15 @@ begin
 							s_temp2_var := "10101";
 						end if;
 					end if;
-				elsif opcode_mem = "0110" then
+				elsif opcode_ir = "0110" then
 					s_temp2_var := "01011";
 				else 
-					--opcode_mem is 0111
+					--opcode_ir is 0111
 					s_temp2_var := "01101";
 				end if;
 
 
-			elsif(s_temp1_var="00010") then
+			elsif(s_curr_var="00010") then
 				t3_write_var:='1';
 				c_write_var:='1';
 				z_write_var:='1';
@@ -199,14 +197,14 @@ begin
 				m60_var:='0';
 				mz_var:='0';
 				s_temp2_var:= "00011";
-			elsif(s_temp1_var="00011") then
+			elsif(s_curr_var="00011") then
 				rf_write_var:='1';
 				m51_var:='1';
 				m50_var:='1';
 				m31_var:='1';
 				m30_var:='0';
 				s_temp2_var:="10100";
-			elsif(s_temp1_var="00100") then
+			elsif(s_curr_var="00100") then
 				t3_write_var:='1';
 				c_write_var:='1';
 				z_write_var:='1';
@@ -218,21 +216,21 @@ begin
 				m60_var:='0';
 				mz_var:='0';
 				s_temp2_var:= "00101";
-			elsif(s_temp1_var="00101") then
+			elsif(s_curr_var="00101") then
 				rf_write_var:='1';
 				m51_var:='1';
 				m50_var:='1';
 				m31_var:='0';
 				m30_var:='1';
 				s_temp2_var:="10100";
-			elsif(s_temp1_var="00110") then
+			elsif(s_curr_var="00110") then
 				rf_write_var:='1';
 				m51_var:='0';
 				m50_var:='1';
 				m31_var:='0';
 				m30_var:='0';
 				s_temp2_var:="10100";
-			elsif(s_temp1_var="00111") then
+			elsif(s_curr_var="00111") then
 				t2_write_var:='1';
 				m101_var:='1';
 				m100_var:='1';
@@ -245,20 +243,20 @@ begin
 				else
 					s_temp2_var:="01001";
 				end if ;
-			elsif(s_temp1_var="01000") then
+			elsif(s_curr_var="01000") then
 				t3_write_var:='1';
 				m21_var:='0';
 				m20_var:='0';
 				m61_var:='0';
 				m60_var:='0';
 				s_temp2_var:="01010";
-			elsif(s_temp1_var="01001") then
+			elsif(s_curr_var="01001") then
 				memory_write_var:='1';
 				m21_var:='0';
 				m20_var:='0';
 				m12_var:='0';
 				s_temp2_var:="10100";
-			elsif(s_temp1_var="01010") then
+			elsif(s_curr_var="01010") then
 				rf_write_var:='1';
 				z_write_var:='1';
 				m31_var:='0';
@@ -267,14 +265,14 @@ begin
 				m50_var:='1';
 				mz_var:='1';
 				s_temp2_var:="10100";
-			elsif(s_temp1_var="01011") then
+			elsif(s_curr_var="01011") then
 				t2_write_var:='1';
 				m21_var:='1';
 				m20_var:='1';
 				m71_var:='1';
 				m70_var:='1';
 				s_temp2_var:="01100";
-			elsif(s_temp1_var="01100") then
+			elsif(s_curr_var="01100") then
 				rf_write_var:='1';
 				t3_write_var:='1';
 				m51_var:='1';
@@ -288,7 +286,7 @@ begin
 				m61_var:='1';
 				m60_var:='0';
 				s_temp2_var:="10011";
-			elsif(s_temp1_var="01101") then
+			elsif(s_curr_var="01101") then
 				t3_write_var:='1';
 				t2_write_var:='1';
 				m101_var:='0';
@@ -301,7 +299,7 @@ begin
 				m71_var:='0';
 				m70_var:='0';
 				s_temp2_var:="01110";
-			elsif(s_temp1_var="01110") then
+			elsif(s_curr_var="01110") then
 				t1_write_var:='1';
 				m101_var:='1';
 				m100_var:='0';
@@ -317,7 +315,7 @@ begin
 				else
 					s_temp2_var:="01101";
 				end if;
-			elsif(s_temp1_var="01111") then
+			elsif(s_curr_var="01111") then
 				pc_write_var:='1';
 				m101_var:='0';
 				m100_var:='1';
@@ -325,7 +323,7 @@ begin
 				m90_var:='0';
 				m1_var:='0';
 				s_temp2_var:="00000";
-			elsif(s_temp1_var="10000") then
+			elsif(s_curr_var="10000") then
 				rf_write_var:='1';
 				t2_write_var:='1';
 				m31_var:='0';
@@ -334,12 +332,12 @@ begin
 				m50_var:='0';
 				m71_var:='0';
 				m70_var:='1';
-				if opcode_mem = "1000" then
+				if opcode_ir = "1000" then
 					s_temp2_var:="01111";
 				else
 					s_temp2_var:="10010";
 				end if ;
-			elsif(s_temp1_var="10001") then
+			elsif(s_curr_var="10001") then
 				pc_write_var:='1';
 				m101_var:='0';
 				m100_var:='1';
@@ -347,23 +345,23 @@ begin
 				m90_var:='1';
 				m1_var:='0';
 				s_temp2_var:="00000";
-			elsif(s_temp1_var="10010") then
+			elsif(s_curr_var="10010") then
 				pc_write_var:='1';
 				m1_var:='1';
 				s_temp2_var:="00000";
-			elsif(s_temp1_var="10011") then
+			elsif(s_curr_var="10011") then
 				t1_write_var:='1';
 				m101_var:='1';
 				m100_var:='0';
 				m91_var:='1';
 				m90_var:='1';
 				m8_var:='1';
-				if(t3(2 downto 0)="111") then
+				if(t3(2 downto 0)="000") then
 					s_temp2_var:="10100";
 				else
 					s_temp2_var:="01011";
 				end if;
-			elsif(s_temp1_var="10100") then
+			elsif(s_curr_var="10100") then
 				pc_write_var:='1';
 				m101_var:='0';
 				m100_var:='1';
@@ -371,7 +369,7 @@ begin
 				m90_var:='1';
 				m1_var:='0';
 				s_temp2_var:="00000";
-			elsif(s_temp1_var="10110") then
+			elsif(s_curr_var="10110") then
 				if(rf_1=rf_2) then
 					s_temp2_var:="10001";
 				else
@@ -379,7 +377,7 @@ begin
 				end if;
 			
 			else
-				--here s_temp1_var is "10101"=21 only
+				--here s_curr_var is "10101"=21 only
 				t3_write_var:='1';
 				alu_control_signal_var:='0'; --meaning go do nand now!
 				z_write_var:='1';
@@ -393,11 +391,212 @@ begin
 				s_temp2_var:="00011";
 
 			end if;
+
+			t1_write_var  := '0';
+			t2_write_var  := '0';
+			t3_write_var  := '0';
+			ir_write_var   := '0';
+			pc_write_var  := '0';
+			memory_write_var  := '0';
+			rf_write_var   := '0';
+			c_write_var  := '0';
+			z_write_var  := '0';
+			alu_control_signal_var  := '1'; --default setting to addition!
+			m1_var  := '0';  m12_var  := '0';  m20_var  := '0';  m21_var  := '0';
+			m30_var  := '0';  m31_var  := '0';
+			m4_var  := '0';
+			m50_var  := '0';  m51_var   := '0';
+			m60_var  := '0';  m61_var   := '0';
+			m70_var  := '0';  m71_var   := '0';
+			m8_var   := '0';
+			m90_var  := '0';  m91_var   := '0';
+			m100_var  := '0';  m101_var   := '0';
+			mz_var   :='0';
+
+			if(s_temp2_var="00000") then
+				ir_write_var:='1';
+				m21_var:='0';
+				m20_var:='1';
+
+			elsif (s_temp2_var="00001") then
+				t1_write_var:='1';
+				t2_write_var:='1';
+				t3_write_var:='1';
+				m4_var:='0';
+				m8_var:='0';
+				m71_var:='0';
+				m70_var:='1';
+				m61_var:='0';
+				m60_var:='1';
+
+			elsif(s_temp2_var="00010") then
+				t3_write_var:='1';
+				c_write_var:='1';
+				z_write_var:='1';
+				m101_var:='1';
+				m100_var:='0';
+				m91_var:='1';
+				m90_var:='0';
+				m61_var:='1';
+				m60_var:='0';
+				mz_var:='0';
+			elsif(s_temp2_var="00011") then
+				rf_write_var:='1';
+				m51_var:='1';
+				m50_var:='1';
+				m31_var:='1';
+				m30_var:='0';
+			elsif(s_temp2_var="00100") then
+				t3_write_var:='1';
+				c_write_var:='1';
+				z_write_var:='1';
+				m101_var:='1';
+				m100_var:='0';
+				m91_var:='0';
+				m90_var:='1';
+				m61_var:='1';
+				m60_var:='0';
+				mz_var:='0';
+			elsif(s_temp2_var="00101") then
+				rf_write_var:='1';
+				m51_var:='1';
+				m50_var:='1';
+				m31_var:='0';
+				m30_var:='1';
+			elsif(s_temp2_var="00110") then
+				rf_write_var:='1';
+				m51_var:='0';
+				m50_var:='1';
+				m31_var:='0';
+				m30_var:='0';
+			elsif(s_temp2_var="00111") then
+				t2_write_var:='1';
+				m101_var:='1';
+				m100_var:='1';
+				m91_var:='0';
+				m90_var:='1';
+				m71_var:='1';
+				m70_var:='0';
+			elsif(s_temp2_var="01000") then
+				t3_write_var:='1';
+				m21_var:='0';
+				m20_var:='0';
+				m61_var:='0';
+				m60_var:='0';
+			elsif(s_temp2_var="01001") then
+				memory_write_var:='1';
+				m21_var:='0';
+				m20_var:='0';
+				m12_var:='0';
+			elsif(s_temp2_var="01010") then
+				rf_write_var:='1';
+				z_write_var:='1';
+				m31_var:='0';
+				m30_var:='0';
+				m51_var:='1';
+				m50_var:='1';
+				mz_var:='1';
+			elsif(s_temp2_var="01011") then
+				t2_write_var:='1';
+				m21_var:='1';
+				m20_var:='1';
+				m71_var:='1';
+				m70_var:='1';
+			elsif(s_temp2_var="01100") then
+				rf_write_var:='1';
+				t3_write_var:='1';
+				m51_var:='1';
+				m50_var:='0';
+				m31_var:='1';
+				m30_var:='1';
+				m101_var:='0';
+				m100_var:='0';
+				m91_var:='1';
+				m90_var:='1';
+				m61_var:='1';
+				m60_var:='0';
+			elsif(s_temp2_var="01101") then
+				t3_write_var:='1';
+				t2_write_var:='1';
+				m101_var:='0';
+				m100_var:='0';
+				m91_var:='1';
+				m90_var:='1';
+				m61_var:='1';
+				m60_var:='0';
+				m4_var:='1';
+				m71_var:='0';
+				m70_var:='0';
+			elsif(s_temp2_var="01110") then
+				t1_write_var:='1';
+				m101_var:='1';
+				m100_var:='0';
+				m91_var:='1';
+				m90_var:='1';
+				m8_var:='1';
+				m21_var:='1';
+				m20_var:='1';
+				m12_var:='1';
+				memory_write_var:='1';
+			elsif(s_temp2_var="01111") then
+				pc_write_var:='1';
+				m101_var:='0';
+				m100_var:='1';
+				m91_var:='0';
+				m90_var:='0';
+				m1_var:='0';
+			elsif(s_temp2_var="10000") then
+				rf_write_var:='1';
+				t2_write_var:='1';
+				m31_var:='0';
+				m30_var:='0';
+				m51_var:='0';
+				m50_var:='0';
+				m71_var:='0';
+				m70_var:='1';
+			elsif(s_temp2_var="10001") then
+				pc_write_var:='1';
+				m101_var:='0';
+				m100_var:='1';
+				m91_var:='0';
+				m90_var:='1';
+				m1_var:='0';
+			elsif(s_temp2_var="10010") then
+				pc_write_var:='1';
+				m1_var:='1';
+			elsif(s_temp2_var="10011") then
+				t1_write_var:='1';
+				m101_var:='1';
+				m100_var:='0';
+				m91_var:='1';
+				m90_var:='1';
+				m8_var:='1';
+			elsif(s_temp2_var="10100") then
+				pc_write_var:='1';
+				m101_var:='0';
+				m100_var:='1';
+				m91_var:='1';
+				m90_var:='1';
+				m1_var:='0';
+			elsif(s_temp2_var = "10110") then
 				
+			else
+				--here s_temp2_var is "10101"=21 only
+				t3_write_var:='1';
+				alu_control_signal_var:='0'; --meaning go do nand now!
+				z_write_var:='1';
+				m101_var:='1';
+				m100_var:='0';
+				m91_var:='1';
+				m90_var:='0';
+				m61_var:='1';
+				m60_var:='0';
+				mz_var:='0';
+			end if;
+
 --			s_curr_var:=s_curr_var;
 			if(rising_edge(clk)) then
-				s_curr_var:=s_next_var;
-				s_next_var:=s_temp2_var;
+				s_curr_var:=s_temp2_var;
 				if(rst='1') then
 					t1_write_var  := '0';
 					t2_write_var  := '0';
@@ -424,15 +623,6 @@ begin
 						ir_write_var:='1';
 						m21_var:='0';
 						m20_var:='1';
-						if(opcode_mem="1000") then
-							s_next_var := "10000";
-						elsif(opcode_mem="1001") then
-							s_next_var:="10000";
-						elsif(opcode_mem="0011") then
-							s_next_var := "00110";
-						else
-							s_next_var:="00001";
-						end if;
 					end if;
 				end if;
 				

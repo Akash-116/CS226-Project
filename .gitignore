@@ -10,3 +10,5 @@ iitbProc/*
 /OtherImplem/*
 
 !/OtherImplem/*.vhd
+
+!/OtherImplem/*.pdf
