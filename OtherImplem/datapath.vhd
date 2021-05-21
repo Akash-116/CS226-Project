@@ -36,6 +36,8 @@ port(
 	opcode_mem: out std_logic_vector(3 downto 0);
 	ir_1_0_ir: out std_logic_vector(1 downto 0);
 	ir_1_0_mem: out std_logic_vector(1 downto 0);
+	rf_1: out std_logic_vector(15 downto 0);
+	rf_2: out std_logic_vector(15 downto 0);
 	c: out std_logic;
 	z: out std_logic;
 	t1: out std_logic_vector(15 downto 0);
@@ -240,7 +242,8 @@ begin
 	c_reg: DFlipFlop port map(alu_carry_signal,c_write,clk,rst,c);
 	z_reg: DFlipFlop port map(z_inp_signal,z_write,clk,rst,z);
 	rf_file:rf port map(rf_a1_inp,rf_a2_inp,rf_a3_inp,rf_data_inp,rf_write,clk,rst,rf_outp1,rf_outp2);
-	
+	rf_1<=rf_outp1;
+	rf_2<=rf_outp2;
 	zero_checker : zero_check port map(t3_outp_signal,t3_is_zero);
 	mux_z_inp: twobyone_mux port map(alu_zero_signal,t3_is_zero,mz,z_inp_signal);
 	

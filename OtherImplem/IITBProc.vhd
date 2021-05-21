@@ -21,6 +21,8 @@ port(
 	opcode_mem: in std_logic_vector(3 downto 0);
 	ir_1_0_ir: in std_logic_vector(1 downto 0);
 	ir_1_0_mem: in std_logic_vector(1 downto 0);
+	rf_1: in std_logic_vector(15 downto 0);
+	rf_2: in std_logic_vector(15 downto 0);
 	c: in std_logic;
 	z: in std_logic;
 	t1: in std_logic_vector(15 downto 0);
@@ -85,6 +87,8 @@ port(
 	opcode_mem: out std_logic_vector(3 downto 0);
 	ir_1_0_ir: out std_logic_vector(1 downto 0);
 	ir_1_0_mem: out std_logic_vector(1 downto 0);
+	rf_1: out std_logic_vector(15 downto 0);
+	rf_2: out std_logic_vector(15 downto 0);
 	c: out std_logic;
 	z: out std_logic;
 	t1: out std_logic_vector(15 downto 0);
@@ -112,6 +116,8 @@ signal	opcode_ir:std_logic_vector(3 downto 0);
 signal	ir_1_0_ir:std_logic_vector(1 downto 0);
 signal	opcode_mem:std_logic_vector(3 downto 0);
 signal	ir_1_0_mem:std_logic_vector(1 downto 0);
+signal	rf_outp1:std_logic_vector(15 downto 0);
+signal	rf_outp2:std_logic_vector(15 downto 0);
 signal	c:std_logic;
 signal	z:std_logic;
 signal	t1:std_logic_vector(15 downto 0);
@@ -128,6 +134,8 @@ control_unit: controller port map(
 	opcode_mem,
 	ir_1_0_ir,
 	ir_1_0_mem,
+	rf_outp1,
+	rf_outp2,
 	c,
 	z,
 	t1,
@@ -186,6 +194,8 @@ datapath_unit:datapath port map(
 	opcode_mem,
 	ir_1_0_ir,
 	ir_1_0_mem,
+	rf_outp1,
+	rf_outp2,
 	c,
 	z,
 	t1,

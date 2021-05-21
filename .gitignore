@@ -6,3 +6,7 @@ iitbProc/*
 !iitbProc/Report
 
 !iitbProc/*.xlsx
+
+/OtherImplem/*
+
+!/OtherImplem/*.vhd
